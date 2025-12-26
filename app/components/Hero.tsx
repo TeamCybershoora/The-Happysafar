@@ -156,6 +156,7 @@ export default function Hero() {
             ) : null}
           </div>
         </div>
+        
       </section>
       <style jsx>{`
         .package-hero {
