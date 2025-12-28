@@ -34,8 +34,20 @@ export default function ContactSection() {
           <div className="contact-list">
             {contactDetails.map((item) => {
               const Icon = item.icon;
+              const href =
+                item.label === "Email Address"
+                  ? `mailto:${item.value}`
+                  : item.label === "Phone Number"
+                    ? `tel:${item.value.replace(/[^\d+]/g, "")}`
+                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.value)}`;
+              const isExternal = item.label === "Our Location";
               return (
-                <article key={item.label}>
+                <a
+                  key={item.label}
+                  href={href}
+                  className="contact-row"
+                  {...(isExternal ? { target: "_blank", rel: "noopener" } : {})}
+                >
                   <div className="icon-pill">
                     <Icon />
                   </div>
@@ -43,7 +55,7 @@ export default function ContactSection() {
                     <p>{item.label}</p>
                     <strong>{item.value}</strong>
                   </div>
-                </article>
+                </a>
               );
             })}
           </div>
@@ -122,18 +134,43 @@ export default function ContactSection() {
         }
 
         .contact-list {
-          display: flex;
-          flex-direction: column;
+          display: grid;
           gap: 1rem;
+          margin-top: 1.75rem;
         }
 
-        .contact-list article {
+        .contact-row {
           display: flex;
           gap: 1rem;
+          align-items: flex-start;
           padding: 1rem;
-          border-radius: 1rem;
+          border-radius: 1.5rem;
           border: 1px solid rgba(15, 23, 42, 0.08);
-          background: #fffaf5;
+          background: #fff;
+          text-decoration: none;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .contact-row:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+        }
+
+        .contact-row p {
+          margin: 0;
+          color: #64748b;
+          font-size: 0.85rem;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .contact-row strong {
+          display: block;
+          margin-top: 0.35rem;
+          color: #0f172a;
+          font-weight: 700;
+          line-height: 1.35;
         }
 
         .icon-pill {
