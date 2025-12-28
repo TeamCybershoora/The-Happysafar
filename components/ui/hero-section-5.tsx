@@ -28,6 +28,9 @@ const MilestoneMarker = ({ milestone }: { milestone: Milestone }) => {
     pending: "bg-muted border-border",
   };
 
+  const floatDistance = 8;
+  const floatDuration = 2.6;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
@@ -37,7 +40,16 @@ const MilestoneMarker = ({ milestone }: { milestone: Milestone }) => {
       className="absolute flex items-center gap-4"
       style={milestone.position}
     >
-      <div className="relative flex h-8 w-8 items-center justify-center">
+      <motion.div
+        className="relative flex h-8 w-8 items-center justify-center"
+        animate={{ y: [0, -floatDistance, 0] }}
+        transition={{
+          duration: floatDuration,
+          ease: "easeInOut",
+          repeat: Infinity,
+          delay: milestone.id * 0.15,
+        }}
+      >
         <div
           className={cn(
             "absolute h-3 w-3 rounded-full border-2",
@@ -45,10 +57,19 @@ const MilestoneMarker = ({ milestone }: { milestone: Milestone }) => {
           )}
         />
         <div className="absolute h-full w-full rounded-full bg-primary/10" />
-      </div>
-      <div className="rounded-full border bg-card px-4 py-2 text-sm font-medium text-card-foreground shadow-sm">
+      </motion.div>
+      <motion.div
+        className="rounded-full border bg-card px-4 py-2 text-sm font-medium text-card-foreground shadow-sm"
+        animate={{ y: [0, -floatDistance, 0] }}
+        transition={{
+          duration: floatDuration,
+          ease: "easeInOut",
+          repeat: Infinity,
+          delay: milestone.id * 0.15,
+        }}
+      >
         {milestone.name}
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

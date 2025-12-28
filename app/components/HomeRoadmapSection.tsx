@@ -46,17 +46,26 @@ export default function HomeRoadmapSection() {
   return (
     <section className="w-full bg-background text-foreground">
       <div className="container mx-auto flex flex-col items-center px-4 py-16 text-center md:py-24">
-        <h2 className="text-4xl font-bold tracking-tight md:text-6xl lg:text-7xl">
-          Plan your next <span className="rounded-md bg-primary/20 p-2">happy</span> journey
+        <h2 className="text-4xl font-bold tracking-tight text-[#8a410d] md:text-6xl lg:text-7xl">
+          Plan your next <span className="rounded-md bg-[#8a410d] p-2 text-white">happy</span> journey
         </h2>
         <p className="mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
           From enquiry to itinerary to travel—our team handles the details so you can enjoy the experience.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Button size="lg" onClick={openEnquiry}>
+          <Button
+            size="lg"
+            onClick={openEnquiry}
+            className="bg-[#8a410d] text-white hover:bg-[#7a360b]"
+          >
             Enquire Now
           </Button>
-          <Button asChild size="lg" variant="outline">
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="border-[#8a410d] text-[#8a410d] hover:bg-[#fef4ec]"
+          >
             <Link href="/packages">Explore Packages</Link>
           </Button>
         </div>
