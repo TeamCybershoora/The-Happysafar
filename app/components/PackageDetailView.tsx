@@ -127,6 +127,35 @@ const formatItinerary = (step: string, index: number): ItineraryItem => {
 
 const uppercaseFirst = (key: string) => key.charAt(0).toUpperCase() + key.slice(1);
 
+const parseDuration = (duration: string) => {
+  const normalized = duration.replace(/\s+/g, "").toUpperCase();
+  const match = normalized.match(/(\d+)N\/(\d+)D/);
+  if (!match) return null;
+  return {
+    nights: Number(match[1]),
+    days: Number(match[2]),
+  };
+};
+
+const defaultInclusions = [
+  "Comfortable Vehicle (Innova/ Xylo/ Tavera/ Scorpio/ Similar) for sightseeing on all days as per the itinerary.",
+  "Airport pick up & drop as per your flight timings",
+  "Accommodation at all locations on double (for couples & special requests) and triple sharing basis in standard hotels/camps",
+  "Buffet Breakfast and Dinner: Starting with Dinner on Day 1 & ending with Breakfast on Last Day as per itinerary",
+  "Fuel for the whole trip as per the itinerary",
+  "Assured Inner line permits and Ladakh Union fee",
+  "Experienced driver for the entire journey",
+  "Oxygen cylinder and Basic First-Aid during the tour",
+  "Driver expenses/ toll tax/ Fuel/ Parking charges",
+];
+
+const defaultExclusions = [
+  "Expenses of personal nature",
+  "Mentioned cost is not valid between 6 pm and 8 am",
+  "Anything not mentioned under inclusions",
+  "Package price does not include Gala dinner charges applicable on Christmas and New Year's Eve",
+];
+
 function RouteMap({ points }: { points: RoutePoint[] }) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -215,8 +244,12 @@ export default function PackageDetailView({ packageId, source = "curated" }: Pac
   }
 
   const travelPackage = dataset[packageIndex];
+  const parsedDuration = parseDuration(travelPackage.duration);
+  const inclusions = travelPackage.inclusions ?? defaultInclusions;
+  const exclusions = travelPackage.exclusions ?? defaultExclusions;
   const [activeTab, setActiveTab] = useState<TabKey>("detail");
   const [openDetailIndex, setOpenDetailIndex] = useState<number | null>(null);
+  const [openPolicySection, setOpenPolicySection] = useState<"inclusions" | "exclusions" | null>(null);
   const [showRouteMap, setShowRouteMap] = useState(false);
   const [isBrochureDownloading, setIsBrochureDownloading] = useState(false);
   const [quoteSubmitState, setQuoteSubmitState] = useState<"idle" | "success" | "error">("idle");
@@ -597,11 +630,130 @@ export default function PackageDetailView({ packageId, source = "curated" }: Pac
                 <MoveRight className="h-3.5 w-3.5" />
               </button>
             </div>
+            <div className="grid gap-3 rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm sm:grid-cols-2">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-sm font-semibold text-zinc-800">
+                  <CalendarDays className="h-4 w-4 text-amber-600" />
+                  <span>Days</span>
+                </div>
+                <div className="text-sm font-semibold text-zinc-900">
+                  {parsedDuration ? `${parsedDuration.days} Days` : travelPackage.duration}
+                </div>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-sm font-semibold text-zinc-800">
+                  <CalendarDays className="h-4 w-4 text-amber-600" />
+                  <span>Nights</span>
+                </div>
+                <div className="text-sm font-semibold text-zinc-900">
+                  {parsedDuration ? `${parsedDuration.nights} Nights` : "—"}
+                </div>
+              </div>
+            </div>
             <div>
               <h3 className="text-base font-semibold text-zinc-900">Overview</h3>
               <p className="mt-3 whitespace-pre-line text-sm leading-6 text-zinc-700">
                 {travelPackage.summary}
               </p>
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-zinc-900">Inclusions & Exclusions</h3>
+              <p className="mt-2 text-sm text-zinc-600">
+                Tap to expand inclusions and exclusions for this package.
+              </p>
+              <div className="mt-4 space-y-3">
+                <div className="overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-sm">
+                  <button
+                    type="button"
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                    onClick={() =>
+                      setOpenPolicySection((current) => (current === "inclusions" ? null : "inclusions"))
+                    }
+                  >
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-emerald-600" />
+                      <p className="text-sm font-semibold uppercase tracking-[0.35em] text-zinc-900">
+                        Inclusions
+                      </p>
+                    </div>
+                    <span
+                      className={`flex h-8 w-8 items-center justify-center rounded-full border border-zinc-100 bg-zinc-50 text-zinc-600 transition-transform ${
+                        openPolicySection === "inclusions" ? "rotate-180" : ""
+                      }`}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                  <div
+                    className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                      openPolicySection === "inclusions" ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    }`}
+                  >
+                    {openPolicySection === "inclusions" ? (
+                      <div className="overflow-hidden px-5 pb-5 text-sm leading-6 text-zinc-700">
+                        {inclusions.length > 0 ? (
+                          <ul className="space-y-2">
+                            {inclusions.map((item, index) => (
+                              <li key={`inclusion-${index}`} className="flex items-start gap-2">
+                                <Check className="mt-0.5 h-4 w-4 text-emerald-600" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-sm text-zinc-600">Inclusions will be shared on request.</p>
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="overflow-hidden rounded-2xl border border-zinc-100 bg-white shadow-sm">
+                  <button
+                    type="button"
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                    onClick={() =>
+                      setOpenPolicySection((current) => (current === "exclusions" ? null : "exclusions"))
+                    }
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="h-4 w-4 rounded-full border border-rose-200 bg-rose-50" />
+                      <p className="text-sm font-semibold uppercase tracking-[0.35em] text-zinc-900">
+                        Exclusions
+                      </p>
+                    </div>
+                    <span
+                      className={`flex h-8 w-8 items-center justify-center rounded-full border border-zinc-100 bg-zinc-50 text-zinc-600 transition-transform ${
+                        openPolicySection === "exclusions" ? "rotate-180" : ""
+                      }`}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                  <div
+                    className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                      openPolicySection === "exclusions" ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    }`}
+                  >
+                    {openPolicySection === "exclusions" ? (
+                      <div className="overflow-hidden px-5 pb-5 text-sm leading-6 text-zinc-700">
+                        {exclusions.length > 0 ? (
+                          <ul className="space-y-2">
+                            {exclusions.map((item, index) => (
+                              <li key={`exclusion-${index}`} className="flex items-start gap-2">
+                                <span className="mt-0.5 h-4 w-4 rounded-full border border-rose-200 bg-rose-50" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-sm text-zinc-600">Exclusions will be shared on request.</p>
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
             </div>
             <div>
               <h3 className="text-base font-semibold text-zinc-900">Day-by-day highlights</h3>
@@ -808,7 +960,7 @@ export default function PackageDetailView({ packageId, source = "curated" }: Pac
           <div className="mt-4 flex flex-wrap items-center gap-3 text-sm font-medium text-amber-100 sm:mt-6 sm:gap-4">
             <span className="flex items-center gap-2">
               <CalendarDays className="h-4 w-4" />
-              {travelPackage.duration}
+              {parsedDuration ? `${parsedDuration.nights}N / ${parsedDuration.days}D` : travelPackage.duration}
             </span>
             <span className="flex items-center gap-2">
               <Users className="h-4 w-4" />

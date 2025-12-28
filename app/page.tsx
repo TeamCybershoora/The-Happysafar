@@ -3,6 +3,7 @@ import Hero from "./components/Hero";
 import About from "./components/About";
 import PackageCard from "./components/PackageCard";
 import { curatedPackages } from "@/data/packages";
+import HomeRoadmapSection from "./components/HomeRoadmapSection";
 import PopularDestinations from "./components/PopularDestinations";
 import OurServices from "./components/OurServices";
 import HowItWorks from "./components/HowItWorks";
@@ -13,6 +14,9 @@ import Skiper39Client from "./components/Skiper39Client";
 
 
 export default function Home() {
+  const firstEightPackages = curatedPackages.slice(0, 8);
+  const remainingPackages = curatedPackages.slice(8);
+
   return (
     <>
       
@@ -31,7 +35,15 @@ export default function Home() {
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
-            {curatedPackages.map((pkg) => (
+            {firstEightPackages.map((pkg) => (
+              <PackageCard key={pkg.id} details={pkg} />
+            ))}
+          </div>
+        </section>
+        <HomeRoadmapSection />
+        <section className="mx-auto flex max-w-6xl flex-col gap-6 px-6 pb-20 pt-0 text-left">
+          <div className="grid gap-6 md:grid-cols-2">
+            {remainingPackages.map((pkg) => (
               <PackageCard key={pkg.id} details={pkg} />
             ))}
           </div>

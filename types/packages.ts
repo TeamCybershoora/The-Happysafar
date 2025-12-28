@@ -6,6 +6,8 @@ export type PackageDetails = {
   image: string;
   itinerary: string[];
   summary: string;
+  inclusions?: string[];
+  exclusions?: string[];
   ctaLink?: string;
   whatsappLink?: string;
 };
