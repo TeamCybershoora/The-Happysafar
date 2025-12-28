@@ -96,7 +96,7 @@ export default function ImageReveal({ leftImage, middleImage, rightImage }: Imag
 
     return (
         <motion.div
-            className="relative flex h-64 w-full max-w-none items-center justify-center overflow-hidden"
+            className="relative flex h-64 w-full min-w-72 items-center justify-center overflow-hidden"
             variants={containerVariants}
             initial="initial"
             animate="animate"

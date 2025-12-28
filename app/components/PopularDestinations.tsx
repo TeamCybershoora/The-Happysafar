@@ -1,4 +1,7 @@
+"use client";
+
 import ImageReveal from "@/app/components/ui/image-tiles";
+import { motion } from "framer-motion";
 
 interface PopularDestinationsProps {
   eyebrow?: string;
@@ -11,6 +14,16 @@ export default function PopularDestinations({
   title = "Explore Rajasthan’s most storied circuits.",
   description = "Glide through Jaipur bazaars, Jodhpur’s blue lanes, Udaipur ghats, and the Thar dunes. Hover to uncover signature stays and insider-only experiences.",
 }: PopularDestinationsProps) {
+  const floating = (delay: number) => ({
+    animate: { y: [0, -10, 0] },
+    transition: {
+      duration: 2.8,
+      ease: "easeInOut" as const,
+      repeat: Infinity,
+      delay,
+    },
+  });
+
   return (
     <section className="mx-auto max-w-6xl overflow-x-hidden px-6 py-12 text-left">
       <div className="mb-8 space-y-2">
@@ -26,12 +39,14 @@ export default function PopularDestinations({
             <h3 className="text-xl font-semibold text-zinc-900">Pink City Icons</h3>
             <p className="text-sm text-zinc-600">Amber Fort, Hawa Mahal & old bazaars.</p>
           </div>
-          <div className="flex w-full justify-center">
-            <ImageReveal
-              leftImage="./images/jaigarhfort.jpg"
-              middleImage="./images/amberfort.webp"
-              rightImage="./images/jalmahal.jpg"
-            />
+          <div className="w-full">
+            <motion.div className="w-full" {...floating(0)}>
+              <ImageReveal
+                leftImage="/images/jaigarhfort.jpg"
+                middleImage="/images/amberfort.webp"
+                rightImage="/images/jalmahal.jpg"
+              />
+            </motion.div>
           </div>
         </div>
 
@@ -41,12 +56,14 @@ export default function PopularDestinations({
             <h3 className="text-xl font-semibold text-zinc-900">Lakes & Palaces</h3>
             <p className="text-sm text-zinc-600">City Palace views & Lake Pichola sunsets.</p>
           </div>
-          <div className="flex w-full justify-center">
-            <ImageReveal
-              leftImage="./images/citypalace.webp"
-              middleImage="./images/tajlake.jpg"
-              rightImage="./images/thardesert.jpg"
-            />
+          <div className="w-full">
+            <motion.div className="w-full" {...floating(0.2)}>
+              <ImageReveal
+                leftImage="/images/citypalace.webp"
+                middleImage="/images/tajlake.jpg"
+                rightImage="/images/thardesert.jpg"
+              />
+            </motion.div>
           </div>
         </div>
 
@@ -56,12 +73,14 @@ export default function PopularDestinations({
             <h3 className="text-xl font-semibold text-zinc-900">Thar Desert Trails</h3>
             <p className="text-sm text-zinc-600">Golden fort lanes & sand dune evenings.</p>
           </div>
-          <div className="flex w-full justify-center">
-            <ImageReveal
-              leftImage="./images/thardesert.jpg"
-              middleImage="./images/tharcamel.jpg"
-              rightImage="./images/thar.webp"
-            />
+          <div className="w-full">
+            <motion.div className="w-full" {...floating(0.4)}>
+              <ImageReveal
+                leftImage="/images/thardesert.jpg"
+                middleImage="/images/tharcamel.jpg"
+                rightImage="/images/thar.webp"
+              />
+            </motion.div>
           </div>
         </div>
       </div>
