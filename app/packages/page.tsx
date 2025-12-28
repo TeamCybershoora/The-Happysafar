@@ -6,25 +6,10 @@ import PackageCard from "../components/PackageCard";
 import { extendedPackages } from "@/data/packages";
 import Navbar from "../components/Navbar";
 
-const heroHighlights = [
-  "Tailor-made Rajasthan circuits",
-  "Desert, palace & jungle escapes",
-  "Dedicated planners on every trip",
-];
 
-const serviceColumns = [
-  {
-    title: "Signature Experiences",
-    items: ["Floating breakfasts & royal picnics", "Private folk performances under the stars", "Sunrise hot-air balloons & dune drives"],
-  },
-  {
-    title: "Seamless Logistics",
-    items: ["Chauffeured transfers & guides", "24/7 concierge during travel", "Handpicked stays for every comfort"],
-  },
-];
 
 const uniquePackages = Array.from(new Map(extendedPackages.map((pkg) => [pkg.id, pkg])).values());
-const displayPackages = uniquePackages.slice(0, 8);
+const displayPackages = uniquePackages;
 const SLIDE_INTERVAL = 5000;
 const CONTENT_DELAY = 500;
 

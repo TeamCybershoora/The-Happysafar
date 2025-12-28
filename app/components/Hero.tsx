@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { curatedPackages } from "@/data/packages";
+import { extendedPackages } from "@/data/packages";
 import Navbar from "./Navbar";
 
 export default function Hero() {
   const heroPackages = useMemo(
-    () => curatedPackages.filter((pkg) => Boolean(pkg.image)).slice(0, 5),
+    () => extendedPackages.filter((pkg) => Boolean(pkg.image)),
     [],
   );
   const [activeIndex, setActiveIndex] = useState(0);
@@ -87,13 +87,7 @@ export default function Hero() {
                 {activePackage ? activePackage.title.trim() : "Signature Rajasthan Escapes"}
               </span>
             </h1>
-            {activePackage && (
-              <p className="package-hero__meta">
-                <span>{activePackage.duration}</span>
-                {activePackage.priceTag ? <span>{activePackage.priceTag}</span> : null}
-              </p>
-            )}
-
+            
             <div className="package-hero__cta-row">
               <button type="button" className="package-hero__cta-primary" onClick={openEnquiry}>
                 Enquire Now
@@ -124,10 +118,6 @@ export default function Hero() {
                 <div className="package-hero-card__overlay" />
                 <div className="package-hero-card__text">
                   <div className="package-hero-card__title">{outgoingPackage.title.trim()}</div>
-                  <div className="package-hero-card__meta">
-                    <span>{outgoingPackage.duration}</span>
-                    {outgoingPackage.priceTag ? <span>{outgoingPackage.priceTag}</span> : null}
-                  </div>
                 </div>
               </div>
             ) : null}
@@ -147,10 +137,6 @@ export default function Hero() {
                 <div className="package-hero-card__overlay" />
                 <div className="package-hero-card__text">
                   <div className="package-hero-card__title">{activePackage.title.trim()}</div>
-                  <div className="package-hero-card__meta">
-                    <span>{activePackage.duration}</span>
-                    {activePackage.priceTag ? <span>{activePackage.priceTag}</span> : null}
-                  </div>
                 </div>
               </div>
             ) : null}

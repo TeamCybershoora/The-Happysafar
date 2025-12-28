@@ -21,6 +21,14 @@ const detailPageMap: Record<string, string> = {
   "PACKAGE 06": "/package6",
   "PACKAGE 07": "/package7",
   "PACKAGE 08": "/package8",
+  "PACKAGE 09": "/package9",
+  "PACKAGE 10": "/package10",
+  "PACKAGE 11": "/package11",
+  "PACKAGE 12": "/package12",
+  "PACKAGE 13": "/package13",
+  "PACKAGE 14": "/package14",
+  "PACKAGE 15": "/package15",
+  "PACKAGE 16": "/package16",
 };
 
 const cityDetailPageMap: Record<string, string> = {
@@ -36,6 +44,10 @@ const cityDetailPageMap: Record<string, string> = {
   "PACKAGE 10": "/city/city10",
   "PACKAGE 11": "/city/city11",
   "PACKAGE 12": "/city/city12",
+  "PACKAGE 13": "/city/city13",
+  "PACKAGE 14": "/city/city14",
+  "PACKAGE 15": "/city/city15",
+  "PACKAGE 16": "/city/city16",
 };
 
 const buildDetailPath = (rawId: string) => `/packages/${encodeURIComponent(normalizeId(rawId))}`;

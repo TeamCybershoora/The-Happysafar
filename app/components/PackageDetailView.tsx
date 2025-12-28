@@ -820,9 +820,9 @@ export default function PackageDetailView({ packageId, source = "curated" }: Pac
             </span>
           </div>
           <div className="mt-6 flex flex-wrap gap-2 sm:mt-8 sm:gap-3">
-            {summaryHighlights.map((highlight) => (
+            {summaryHighlights.map((highlight, index) => (
               <span
-                key={highlight}
+                key={`${highlight}-${index}`}
                 className="rounded-full border border-white/40 bg-white/10 px-3 py-1 text-xs uppercase tracking-wide text-amber-200 backdrop-blur"
               >
                 {highlight}
