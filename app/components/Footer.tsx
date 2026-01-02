@@ -37,6 +37,12 @@ export default function Footer() {
     target?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const getServiceHref = (service: (typeof services)[number]) => {
+    if (service.label === "Drop Us an Email") return `mailto:${service.value}`;
+    if (service.label === "Customer Support") return `tel:${service.value.replace(/[^\d+]/g, "")}`;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(service.value)}`;
+  };
+
   return (
     <footer className="footer">
       <div className="footer__grid">
@@ -82,14 +88,20 @@ export default function Footer() {
           <p className="footer-heading">Services</p>
           <ul className="footer__service-list">
             {services.map((service) => (
-              <li key={service.label} className="footer__service">
-                <span className="footer__service-icon">
-                  <service.icon className="footer__service-icon-svg" />
-                </span>
-                <div>
-                  <p className="footer__service-label">{service.label}</p>
-                  <p className="footer__service-value">{service.value}</p>
-                </div>
+              <li key={service.label}>
+                <a
+                  href={getServiceHref(service)}
+                  className="footer__service footer__service-link footer__link"
+                  {...(service.label === "Studio" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                >
+                  <span className="footer__service-icon">
+                    <service.icon className="footer__service-icon-svg" />
+                  </span>
+                  <div>
+                    <p className="footer__service-label">{service.label}</p>
+                    <p className="footer__service-value">{service.value}</p>
+                  </div>
+                </a>
               </li>
             ))}
           </ul>
@@ -214,6 +226,11 @@ export default function Footer() {
           display: flex;
           gap: 0.75rem;
           align-items: flex-start;
+        }
+
+        .footer__service-link {
+          width: 100%;
+          text-decoration: none;
         }
 
         .footer__service-icon {

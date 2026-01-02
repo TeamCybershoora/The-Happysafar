@@ -26,6 +26,11 @@ export default function ContactView({
 }: ContactViewProps) {
   const whatsappDigits = useMemo(() => normaliseDigits(whatsappNumber), [whatsappNumber]);
   const callDigits = useMemo(() => normaliseDigits(callNumber), [callNumber]);
+  const callHref = useMemo(() => `tel:${callNumber.replace(/[^\d+]/g, "")}`, [callNumber]);
+  const mapsHref = useMemo(
+    () => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${officeAddress}, ${officeCity}`)}`,
+    [officeAddress, officeCity]
+  );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
@@ -44,7 +49,7 @@ export default function ContactView({
               replies within hours with ideas, availability, and transparent pricing.
             </p>
             <div className="contact-hero__actions">
-              <a className="contact-hero__cta-primary" href={`tel:${callNumber}`}>
+              <a className="contact-hero__cta-primary" href={callHref}>
                 Call 
               </a>
               <a
@@ -70,7 +75,7 @@ export default function ContactView({
               <ul>
                 <li>
                   <span>Phone</span>
-                  <a href={`tel:${callNumber}`}>+91 {callDigits.slice(-10)}</a>
+                  <a href={callHref}>+91 {callDigits.slice(-10)}</a>
                 </li>
                 <li>
                   <span>WhatsApp</span>
@@ -94,7 +99,9 @@ export default function ContactView({
               <ul>
                 <li>
                   <span>Studio address</span>
-                  <p>{officeAddress}</p>
+                  <a href={mapsHref} target="_blank" rel="noopener">
+                    {officeAddress}
+                  </a>
                 </li>
                 <li>
                   <span>Hours</span>
